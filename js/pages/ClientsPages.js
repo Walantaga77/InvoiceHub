@@ -8,22 +8,24 @@ let sortAsc = true;
 function createClientRow(client, index, onEdit, onDelete) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-    <td>${index + 1}</td>
-    <td>${client.id}</td>
-    <td>${client.name}</td>
-    <td>${client.email}</td>
-    <td>${client.company}</td>
-    <td>${client.phone}</td>
-    <td>${client.address}</td>
-    <td>
+    <td data-label="No">${index + 1}</td>
+    <td data-label="ID">${client.id}</td>
+    <td data-label="Name">${client.name}</td>
+    <td data-label="Email">${client.email}</td>
+    <td data-label="Company">${client.company}</td>
+    <td data-label="Phone">${client.phone}</td>
+    <td data-label="Address">${client.address}</td>
+    <td data-label="Actions">
       <button data-id="${client.id}" class="edit-btn">Edit</button>
       <button data-id="${client.id}" class="delete-btn">Delete</button>
     </td>
   `;
+    // Event listeners tetap sama
     tr.querySelector('.edit-btn').addEventListener('click', () => onEdit(client.id));
     tr.querySelector('.delete-btn').addEventListener('click', () => onDelete(client.id));
     return tr;
 }
+
 
 export function ClientsPage() {
     const div = document.createElement('div');
