@@ -1,0 +1,132 @@
+h2 {
+  margin-bottom: 1rem;
+}
+
+input[type="text"] {
+  padding: 0.5rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* Add Client Button */
+.add-client-btn {
+  background-color: #43a047; /* Green */
+  color: white;
+}
+
+.add-client-btn:hover {
+  background-color: #388e3c;
+}
+
+/* Table Styling */
+table.client-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.client-table th,
+.client-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.client-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.client-table tbody tr:hover {
+  background-color: #eef;
+}
+
+/* Tambahkan selector global untuk tombol */
+.edit-btn {
+  background-color: #1976d2;
+  color: white;
+  margin-right: 0.3rem;
+}
+
+.edit-btn:hover {
+  background-color: #1259a3;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+.add-client-btn {
+  background-color: #43a047;
+  color: white;
+}
+
+.add-client-btn:hover {
+  background-color: #388e3c;
+}
+
+th[data-key] {
+  user-select: none;
+  white-space: nowrap;
+}
+
+.reset-filter-btn {
+  background-color: #db3d3d;
+  color: white;
+}
+
+.reset-filter-btn:hover {
+  background-color: #db3d3d;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #f1f3f4;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+  .search-wrapper {
+    max-width: 400px;
+  }
+}
+
+.search-icon {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.search-input::placeholder {
+  color: #888;
+}

@@ -1,0 +1,144 @@
+.invoice-container, .classic-invoice {
+  font-family: 'Georgia', serif;
+  color: #000;
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 2px dotted #000;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.company-info {
+  width: 50%;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.invoice-meta {
+  width: 50%;
+  font-size: 0.9rem;
+}
+
+.invoice-meta h2,
+.invoice-meta .title {
+  margin: 0 0 1rem 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.invoice-meta table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-meta table td {
+  padding: 2px 6px;
+  vertical-align: top;
+}
+
+.client-info {
+  margin-bottom: 1rem;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #000;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.invoice-table tfoot td {
+  font-weight: bold;
+}
+
+.transfer-info {
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.signature {
+  text-align: right;
+  margin-top: 3rem;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 2rem;
+  border-top: 1px dashed #000;
+  padding-top: 0.5rem;
+  font-style: italic;
+}
+
+.btn-group {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.no-print {
+  display: inline-block;
+}
+
+/* Print Styling */
+@media print {
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #invoice-content, #invoice-content * {
+    visibility: visible !important;
+  }
+
+  #invoice-content {
+    display: block;
+    position: static;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 680px;
+    padding: 1rem;
+    box-sizing: border-box;
+    border: 1px solid #000;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    padding: 0.3rem !important;
+  }
+
+  .company-info,
+  .invoice-meta {
+    font-size: 0.85rem !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
