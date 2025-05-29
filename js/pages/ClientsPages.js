@@ -182,7 +182,6 @@ export function ClientsPage() {
 
     renderClients();
 
-    // BUNGKUS TABEL DENGAN WRAPPER YANG SCROLLABLE
     const tableWrapper = document.createElement('div');
     tableWrapper.style = 'overflow-x: auto; width: 100%;';
     tableWrapper.appendChild(table);
