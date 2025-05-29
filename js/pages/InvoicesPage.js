@@ -65,33 +65,33 @@ export function InvoicesPage() {
 
   document.body.append(modalInstance.modal, modalInstance.overlay);
 
-  const detailModal = document.createElement('div');
-  detailModal.style = 'position:fixed;top:10%;left:50%;transform:translateX(-50%);background:white;padding:2rem;max-width:600px;width:90%;z-index:12;display:none;';
-  detailModal.innerHTML = `<h3>Invoice Detail</h3><div id="detail-content"></div><button id="close-detail">Close</button>`;
-  document.body.appendChild(detailModal);
+  // const detailModal = document.createElement('div');
+  // detailModal.style = 'position:fixed;top:10%;left:50%;transform:translateX(-50%);background:white;padding:2rem;max-width:600px;width:90%;z-index:12;display:none;';
+  // detailModal.innerHTML = `<h3>Invoice Detail</h3><div id="detail-content"></div><button id="close-detail">Close</button>`;
+  // document.body.appendChild(detailModal);
 
-  const openDetail = (invoice) => {
-    const client = clients.find(c => c.id === invoice.clientId);
-    const itemsHtml = invoice.items.map(i => `
-      <tr><td>${i.name}</td><td>${i.qty}</td><td>${formatCurrency(i.price)}</td><td>${formatCurrency(i.qty * i.price)}</td></tr>
-    `).join('');
-    const total = invoice.items.reduce((sum, i) => sum + i.qty * i.price, 0);
-    detailModal.querySelector('#detail-content').innerHTML = `
-      <p><strong>Invoice:</strong> ${invoice.invoiceNumber}</p>
-      <p><strong>Client:</strong> ${client?.name || '-'}</p>
-      <p><strong>Issued:</strong> ${invoice.issuedDate}</p>
-      <p><strong>Due:</strong> ${invoice.dueDate}</p>
-      <p><strong>Status:</strong> ${invoice.status}</p>
-      <p><strong>Notes:</strong> ${invoice.notes || '-'}</p>
-      <h4>Items:</h4>
-      <table border="1" width="100%" style="border-collapse: collapse;">
-        <thead><tr><th>Name</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
-        <tbody>${itemsHtml}</tbody>
-        <tfoot><tr><td colspan="3"><strong>Total</strong></td><td><strong>${formatCurrency(total)}</strong></td></tr></tfoot>
-      </table>
-    `;
-    overlay.style.display = detailModal.style.display = 'block';
-  };
+  // const openDetail = (invoice) => {
+  //   const client = clients.find(c => c.id === invoice.clientId);
+  //   const itemsHtml = invoice.items.map(i => `
+  //     <tr><td>${i.name}</td><td>${i.qty}</td><td>${formatCurrency(i.price)}</td><td>${formatCurrency(i.qty * i.price)}</td></tr>
+  //   `).join('');
+  //   const total = invoice.items.reduce((sum, i) => sum + i.qty * i.price, 0);
+  //   detailModal.querySelector('#detail-content').innerHTML = `
+  //     <p><strong>Invoice:</strong> ${invoice.invoiceNumber}</p>
+  //     <p><strong>Client:</strong> ${client?.name || '-'}</p>
+  //     <p><strong>Issued:</strong> ${invoice.issuedDate}</p>
+  //     <p><strong>Due:</strong> ${invoice.dueDate}</p>
+  //     <p><strong>Status:</strong> ${invoice.status}</p>
+  //     <p><strong>Notes:</strong> ${invoice.notes || '-'}</p>
+  //     <h4>Items:</h4>
+  //     <table border="1" width="100%" style="border-collapse: collapse;">
+  //       <thead><tr><th>Name</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+  //       <tbody>${itemsHtml}</tbody>
+  //       <tfoot><tr><td colspan="3"><strong>Total</strong></td><td><strong>${formatCurrency(total)}</strong></td></tr></tfoot>
+  //     </table>
+  //   `;
+  //   overlay.style.display = detailModal.style.display = 'block';
+  // };
 
   const deleteInvoice = id => {
     if (confirm('Delete this invoice?')) {
@@ -177,11 +177,16 @@ export function InvoicesPage() {
   dueTo.addEventListener('change', () => render(searchInput.value));
   addBtn.onclick = () => modalInstance.open();
 
-  detailModal.querySelector('#close-detail').onclick = () => {
-    overlay.style.display = detailModal.style.display = 'none';
-  };
+  // detailModal.querySelector('#close-detail').onclick = () => {
+  //   overlay.style.display = detailModal.style.display = 'none';
+  // };
+  // overlay.onclick = () => {
+  //   detailModal.style.display = modalInstance.modal.style.display = 'none';
+  //   overlay.style.display = 'none';
+  // };
+
   overlay.onclick = () => {
-    detailModal.style.display = modalInstance.modal.style.display = 'none';
+    modalInstance.modal.style.display = 'none';
     overlay.style.display = 'none';
   };
 
