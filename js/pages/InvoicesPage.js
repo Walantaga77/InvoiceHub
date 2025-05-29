@@ -101,9 +101,22 @@ export function InvoicesPage() {
     }
   };
 
+  const searchWrapper = document.createElement('div');
+  searchWrapper.className = 'search-wrapper';
+  searchWrapper.style = 'display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;';
+
+  const searchIcon = document.createElement('span');
+  searchIcon.className = 'search-icon';
+  searchIcon.textContent = '🔍';
+
   const searchInput = document.createElement('input');
+  searchInput.type = 'text';
   searchInput.placeholder = 'Search invoice number or client name...';
-  searchInput.style = 'margin-bottom:1rem;width:100%;padding:0.5rem;';
+  searchInput.className = 'search-input';
+  searchInput.style = 'flex: 1; padding: 0.5rem;';
+
+  searchWrapper.append(searchIcon, searchInput);
+
 
   const addBtn = document.createElement('button');
   addBtn.textContent = '+ Add Invoice';
@@ -190,7 +203,7 @@ export function InvoicesPage() {
     overlay.style.display = 'none';
   };
 
-  div.append(searchInput, addBtn, table);
+  div.append(searchWrapper, addBtn);
 
   render();
   const tableWrapper = document.createElement('div');
