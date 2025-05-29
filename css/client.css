@@ -131,3 +131,8 @@ th[data-key] {
   color: #888;
 }
 
+.client-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}

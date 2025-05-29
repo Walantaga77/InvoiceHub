@@ -181,9 +181,19 @@ export function ClientsPage() {
     });
 
     renderClients();
+
+    // BUNGKUS TABEL DENGAN WRAPPER YANG SCROLLABLE
+    const tableWrapper = document.createElement('div');
+    tableWrapper.style = 'overflow-x: auto; width: 100%;';
+    tableWrapper.appendChild(table);
+
+    // Tambahkan min-width agar tabel tidak patah
+    table.style.minWidth = '900px';
+    table.style.borderCollapse = 'collapse';
+
     div.appendChild(searchWrapper);
     div.appendChild(btnContainer);
-    div.appendChild(table);
+    div.appendChild(tableWrapper);
 
     return div;
 }
