@@ -50,7 +50,7 @@ export function InvoicesPage() {
   let invoices = storage.get('invoices') || [];
   const clients = storage.get('clients') || [];
 
-  // One overlay for all modal/detail
+  // One overlay untuk all modal/detail
   const overlay = document.createElement('div');
   overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#0005;display:none;z-index:10;';
   document.body.appendChild(overlay);
@@ -107,7 +107,7 @@ export function InvoicesPage() {
 
   const addBtn = document.createElement('button');
   addBtn.textContent = '+ Add Invoice';
-  addBtn.style = 'margin-bottom:1rem;';
+  addBtn.classList.add('add-invoice-btn');
 
   const table = document.createElement('table');
   table.innerHTML = `
@@ -192,7 +192,6 @@ export function InvoicesPage() {
   tableWrapper.style = 'overflow-x: auto; width: 100%;';
   tableWrapper.appendChild(table);
 
-  // Tambahkan min-width agar tabel tidak patah
   table.style.minWidth = '900px';
   table.style.borderCollapse = 'collapse';
 

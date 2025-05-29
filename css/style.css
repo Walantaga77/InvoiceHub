@@ -52,3 +52,11 @@ body {
   text-decoration: underline;
 }
 
+.add-invoice-btn {
+  background-color: #43a047;
+  color: white;
+}
+
+.add-invoice-btn:hover {
+  background-color: #388e3c;
+}
