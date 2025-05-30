@@ -3,43 +3,103 @@ import { createItemRow } from './ItemRow.js';
 
 export function createInvoiceModal(clients, onSave) {
     const overlay = document.createElement('div');
-    overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#0005;display:none;z-index:11;';
+    overlay.style = `
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 11;
+    display: none;
+  `;
 
     const modal = document.createElement('div');
-    modal.style = 'position:fixed;top:10%;left:50%;transform:translateX(-50%);background:white;padding:2rem;max-width:600px;width:90%;z-index:12;display:none;';
+    modal.style = `
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-width: 600px;
+    width: 90%;
+    z-index: 12;
+    display: none;
+    font-family: sans-serif;
+  `;
+
     modal.innerHTML = `
-    <h3 id="modal-title">Add Invoice</h3>
-    <form>
-      <label>Client:</label>
-      <select name="clientId" required>${clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}</select>
+    <h3 id="modal-title" style="text-align:center;margin-bottom:1rem;">Add Invoice</h3>
+    <form style="display:flex;flex-direction:column;gap:1rem;">
+      <label>
+        Client:
+        <select name="clientId" required style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:5px;">
+          ${clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+        </select>
+      </label>
 
-      <label>Issued Date:</label>
-      <input type="date" name="issuedDate" required>
+      <div style="display:flex;gap:1rem;">
+        <label style="flex:1;">
+          Issued Date:
+          <input type="date" name="issuedDate" required style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:5px;">
+        </label>
+        <label style="flex:1;">
+          Due Date:
+          <input type="date" name="dueDate" required style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:5px;">
+        </label>
+      </div>
 
-      <label>Due Date:</label>
-      <input type="date" name="dueDate" required>
+      <label>
+        Status:
+        <select name="status" required style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:5px;">
+          <option value="paid">Paid</option>
+          <option value="unpaid">Unpaid</option>
+        </select>
+      </label>
 
-      <label>Status:</label>
-      <select name="status" required>
-        <option value="paid">Paid</option>
-        <option value="unpaid">Unpaid</option>
-      </select>
+      <label>
+        Notes:
+        <textarea name="notes" rows="2" style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:5px;"></textarea>
+      </label>
 
-      <label>Notes:</label>
-      <textarea name="notes" rows="2"></textarea>
+      <div>
+        <label>Items:</label>
+        <div id="items-container" style="margin-top:0.5rem;"></div>
+        <button type="button" id="add-item-btn" style="
+          margin-top:0.5rem;
+          padding:0.5rem 1rem;
+          border:none;
+          background:#f3f4f6;
+          color:#333;
+          border-radius:5px;
+          cursor:pointer;
+        ">+ Add Item</button>
+      </div>
 
-      <label>Items:</label>
-      <div id="items-container"></div>
-      <button type="button" id="add-item-btn">+ Add Item</button>
-
-      <br><br>
-      <button type="submit">Save</button>
-      <button type="button" id="cancel-btn">Cancel</button>
+      <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem;">
+        <button type="submit" style="
+          background:#3b82f6;
+          color:white;
+          padding:0.5rem 1.25rem;
+          border:none;
+          border-radius:5px;
+          cursor:pointer;
+        ">Save</button>
+        <button type="button" id="cancel-btn" style="
+          background:#e5e7eb;
+          color:#333;
+          padding:0.5rem 1rem;
+          border:none;
+          border-radius:5px;
+          cursor:pointer;
+        ">Cancel</button>
+      </div>
     </form>
   `;
 
     let currentInvoice = null;
-
     const form = modal.querySelector('form');
     const itemsContainer = modal.querySelector('#items-container');
     const addItemBtn = modal.querySelector('#add-item-btn');
@@ -51,6 +111,7 @@ export function createInvoiceModal(clients, onSave) {
     form.onsubmit = e => {
         e.preventDefault();
         const formData = new FormData(form);
+
         const items = [...itemsContainer.querySelectorAll('.item-row')].map(row => ({
             name: row.querySelector('.item-name').value.trim(),
             qty: parseInt(row.querySelector('.item-qty').value),
@@ -91,6 +152,7 @@ export function createInvoiceModal(clients, onSave) {
         });
         if (!invoice) itemsContainer.appendChild(createItemRow());
         modal.style.display = overlay.style.display = 'block';
+        overlay.style.display = 'block';
     }
 
     return {
