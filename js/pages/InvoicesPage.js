@@ -28,9 +28,9 @@ function createInvoiceRow(invoice, clients, onEdit, onDelete) {
     <td class="status-cell"></td>
     <td>${formatCurrency(total)}</td>
     <td>
-      <button class="edit-btn">✏️</button>
-      <button class="detail-btn">🔍</button>
-      <button class="delete-btn">🗑️</button>
+      <button class="edit-btn">Edit</button>
+      <button class="detail-btn">Detail</button>
+      <button class="delete-btn">Delete</button>
     </td>
   `;
   tr.querySelector('.status-cell').appendChild(createStatusBadge(invoice.status));
