@@ -67,13 +67,70 @@ export function InvoicesPage() {
 
   document.body.append(modalInstance.modal, modalInstance.overlay);
 
+  let lastDeletedInvoice = null;
+  let undoTimeout = null;
+
+  const showUndoToast = () => {
+    const toast = document.createElement('div');
+    toast.textContent = 'Invoice deleted. ';
+    toast.style = `
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 5px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+  `;
+
+    const undoBtn = document.createElement('button');
+    undoBtn.textContent = 'Undo';
+    undoBtn.style = `
+    background: #10b981;
+    border: none;
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+  `;
+
+    undoBtn.onclick = () => {
+      invoices.push(lastDeletedInvoice);
+      storage.set('invoices', invoices);
+      render(searchInput.value);
+      clearTimeout(undoTimeout);
+      toast.remove();
+      lastDeletedInvoice = null;
+    };
+
+    toast.appendChild(undoBtn);
+    document.body.appendChild(toast);
+
+    undoTimeout = setTimeout(() => {
+      toast.remove();
+      lastDeletedInvoice = null;
+    }, 5000);
+  };
+
   const deleteInvoice = id => {
+    const invoice = invoices.find(i => i.id === id);
+    if (!invoice) return;
+
     if (confirm('Delete this invoice?')) {
+      lastDeletedInvoice = invoice;
       invoices = invoices.filter(i => i.id !== id);
       storage.set('invoices', invoices);
       render(searchInput.value);
+      showUndoToast();
     }
   };
+
 
   const addBtn = document.createElement('button');
   addBtn.textContent = '+ Add Invoice';
