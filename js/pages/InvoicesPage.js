@@ -50,6 +50,9 @@ export function InvoicesPage() {
   let invoices = storage.get('invoices') || [];
   const clients = storage.get('clients') || [];
 
+  const ITEMS_PER_PAGE = 10;
+  let currentPage = 1;
+
   const overlay = document.createElement('div');
   overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#0005;display:none;z-index:10;';
   document.body.appendChild(overlay);
@@ -133,10 +136,17 @@ export function InvoicesPage() {
   tableWrapper.style = 'overflow-x: auto; width: 100%; max-width: 100%; margin-top: 1rem;';
   tableWrapper.appendChild(table);
 
-  table.style = `
-    width: 100%;
-    border-collapse: collapse;
-  `;
+  table.style = 'width: 100%; border-collapse: collapse;';
+
+  const pagination = document.createElement('div');
+  pagination.style = 'margin-top: 1rem; display: flex; justify-content: center; gap: 1rem;';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '⟨ Prev';
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next ⟩';
+
+  pagination.append(prevBtn, nextBtn);
 
   const render = (searchText = '') => {
     tbody.innerHTML = '';
@@ -162,10 +172,16 @@ export function InvoicesPage() {
     if (dueFrom.value) filtered = filtered.filter(i => i.dueDate >= dueFrom.value);
     if (dueTo.value) filtered = filtered.filter(i => i.dueDate <= dueTo.value);
 
-    filtered.forEach((inv, idx) => {
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+    pageItems.forEach((inv, idx) => {
       const row = createInvoiceRow(inv, clients, id => modalInstance.open(invoices.find(i => i.id === id)), deleteInvoice);
       const no = document.createElement('td');
-      no.textContent = idx + 1;
+      no.textContent = startIdx + idx + 1;
       row.insertBefore(no, row.firstChild);
 
       row.querySelectorAll('td').forEach(td => {
@@ -191,13 +207,32 @@ export function InvoicesPage() {
       th.style.backgroundColor = '#f0f0f0';
       th.style.borderBottom = '1px solid #ccc';
     });
+
+    pagination.style.display = filtered.length > ITEMS_PER_PAGE ? 'flex' : 'none';
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
   };
 
-  searchInput.addEventListener('input', debounce(e => render(e.target.value), 300));
-  statusFilter.addEventListener('change', () => render(searchInput.value));
-  clientFilter.addEventListener('change', () => render(searchInput.value));
-  dueFrom.addEventListener('change', () => render(searchInput.value));
-  dueTo.addEventListener('change', () => render(searchInput.value));
+  prevBtn.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      render(searchInput.value);
+    }
+  };
+
+  nextBtn.onclick = () => {
+    currentPage++;
+    render(searchInput.value);
+  };
+
+  searchInput.addEventListener('input', debounce(e => {
+    currentPage = 1;
+    render(e.target.value);
+  }, 300));
+  statusFilter.addEventListener('change', () => { currentPage = 1; render(searchInput.value); });
+  clientFilter.addEventListener('change', () => { currentPage = 1; render(searchInput.value); });
+  dueFrom.addEventListener('change', () => { currentPage = 1; render(searchInput.value); });
+  dueTo.addEventListener('change', () => { currentPage = 1; render(searchInput.value); });
   addBtn.onclick = () => modalInstance.open();
 
   overlay.onclick = () => {
@@ -205,7 +240,7 @@ export function InvoicesPage() {
     overlay.style.display = 'none';
   };
 
-  div.append(addBtn, searchWrapper, filterWrapper, tableWrapper);
+  div.append(addBtn, searchWrapper, filterWrapper, tableWrapper, pagination);
   render();
   return div;
 }
