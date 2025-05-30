@@ -3,7 +3,7 @@
   color: #000;
   max-width: 800px;
   margin: auto;
-  padding: 2rem;
+  padding: 1rem;
   border: 1px solid #000;
   background: #fff;
 }
@@ -142,3 +142,10 @@
     display: none !important;
   }
 }
+
+#invoice-content {
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
