@@ -72,34 +72,26 @@ export function InvoicesPage() {
     }
   };
 
-  const searchWrapper = document.createElement('div');
-  searchWrapper.className = 'search-wrapper';
-  searchWrapper.style = `
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  `;
+  const addBtn = document.createElement('button');
+  addBtn.textContent = '+ Add Invoice';
+  addBtn.classList.add('add-invoice-btn');
+  addBtn.style = 'margin-bottom: 1rem;';
 
-  const searchBar = document.createElement('div');
-  searchBar.style = 'flex: 1; display: flex; gap: 0.5rem;';
+  const searchWrapper = document.createElement('div');
+  searchWrapper.style = 'display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;';
+
   const searchIcon = document.createElement('span');
   searchIcon.textContent = '🔍';
+
   const searchInput = document.createElement('input');
   searchInput.type = 'text';
   searchInput.placeholder = 'Search invoice number or client name...';
   searchInput.style = 'flex: 1; padding: 0.5rem;';
-  searchBar.append(searchIcon, searchInput);
 
-  const actionWrapper = document.createElement('div');
-  actionWrapper.style = 'display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end;';
+  searchWrapper.append(searchIcon, searchInput);
 
-  const addBtn = document.createElement('button');
-  addBtn.textContent = '+ Add Invoice';
-  addBtn.classList.add('add-invoice-btn');
-  addBtn.style = 'padding: 0.5rem 1rem;';
+  const filterWrapper = document.createElement('div');
+  filterWrapper.style = 'display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;';
 
   const statusFilter = document.createElement('select');
   statusFilter.innerHTML = `
@@ -108,32 +100,43 @@ export function InvoicesPage() {
     <option value="unpaid">Unpaid</option>
     <option value="overdue">Overdue</option>
   `;
-  statusFilter.style = 'padding: 0.5rem; border-radius: 4px;';
 
   const clientFilter = document.createElement('select');
-  clientFilter.innerHTML = `<option value="">All Clients</option>` +
-    clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  clientFilter.style = 'padding: 0.5rem; border-radius: 4px;';
+  clientFilter.innerHTML = `<option value="">All Clients</option>` + clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 
   const dueFrom = document.createElement('input');
   dueFrom.type = 'date';
-  dueFrom.style = 'padding: 0.5rem; border-radius: 4px;';
-
   const dueTo = document.createElement('input');
   dueTo.type = 'date';
-  dueTo.style = 'padding: 0.5rem; border-radius: 4px;';
 
-  actionWrapper.append(addBtn, statusFilter, clientFilter, dueFrom, dueTo);
-  searchWrapper.append(searchBar, actionWrapper);
+  filterWrapper.append(statusFilter, clientFilter, dueFrom, dueTo);
 
   const table = document.createElement('table');
   table.innerHTML = `
     <thead>
-      <tr><th>No</th><th>Invoice</th><th>Client</th><th>Issued</th><th>Due</th><th>Status</th><th>Total</th><th>Actions</th></tr>
+      <tr>
+        <th>No</th>
+        <th>Invoice</th>
+        <th>Client</th>
+        <th>Issued</th>
+        <th>Due</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
     </thead>
     <tbody></tbody>
   `;
   const tbody = table.querySelector('tbody');
+
+  const tableWrapper = document.createElement('div');
+  tableWrapper.style = 'overflow-x: auto; width: 100%; max-width: 100%; margin-top: 1rem;';
+  tableWrapper.appendChild(table);
+
+  table.style = `
+    width: 100%;
+    border-collapse: collapse;
+  `;
 
   const render = (searchText = '') => {
     tbody.innerHTML = '';
@@ -164,14 +167,30 @@ export function InvoicesPage() {
       const no = document.createElement('td');
       no.textContent = idx + 1;
       row.insertBefore(no, row.firstChild);
+
+      row.querySelectorAll('td').forEach(td => {
+        td.style.padding = '0.75rem';
+        td.style.borderBottom = '1px solid #eee';
+      });
+
+      row.onmouseover = () => row.style.backgroundColor = '#f9f9f9';
+      row.onmouseout = () => row.style.backgroundColor = '';
+
       tbody.appendChild(row);
     });
 
     if (filtered.length === 0) {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td colspan="8">No invoices found.</td>`;
+      tr.innerHTML = `<td colspan="8" style="padding: 1rem; text-align: center;">No invoices found.</td>`;
       tbody.appendChild(tr);
     }
+
+    table.querySelectorAll('th').forEach(th => {
+      th.style.padding = '0.75rem';
+      th.style.textAlign = 'left';
+      th.style.backgroundColor = '#f0f0f0';
+      th.style.borderBottom = '1px solid #ccc';
+    });
   };
 
   searchInput.addEventListener('input', debounce(e => render(e.target.value), 300));
@@ -186,24 +205,7 @@ export function InvoicesPage() {
     overlay.style.display = 'none';
   };
 
-  div.append(searchWrapper);
-
+  div.append(addBtn, searchWrapper, filterWrapper, tableWrapper);
   render();
-
-  const tableWrapper = document.createElement('div');
-  tableWrapper.style = `
-    overflow-x: auto;
-    width: 100%;
-    max-width: 100%;
-  `;
-
-  table.style = `
-    width: max-content;
-    min-width: 1000px;
-    border-collapse: collapse;
-  `;
-
-  tableWrapper.appendChild(table);
-  div.appendChild(tableWrapper);
   return div;
 }
