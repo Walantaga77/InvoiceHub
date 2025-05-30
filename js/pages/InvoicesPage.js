@@ -50,7 +50,6 @@ export function InvoicesPage() {
   let invoices = storage.get('invoices') || [];
   const clients = storage.get('clients') || [];
 
-  // One overlay untuk all modal/detail
   const overlay = document.createElement('div');
   overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#0005;display:none;z-index:10;';
   document.body.appendChild(overlay);
@@ -75,24 +74,57 @@ export function InvoicesPage() {
 
   const searchWrapper = document.createElement('div');
   searchWrapper.className = 'search-wrapper';
-  searchWrapper.style = 'display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;';
+  searchWrapper.style = `
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  `;
 
+  const searchBar = document.createElement('div');
+  searchBar.style = 'flex: 1; display: flex; gap: 0.5rem;';
   const searchIcon = document.createElement('span');
-  searchIcon.className = 'search-icon';
   searchIcon.textContent = '🔍';
-
   const searchInput = document.createElement('input');
   searchInput.type = 'text';
   searchInput.placeholder = 'Search invoice number or client name...';
-  searchInput.className = 'search-input';
   searchInput.style = 'flex: 1; padding: 0.5rem;';
+  searchBar.append(searchIcon, searchInput);
 
-  searchWrapper.append(searchIcon, searchInput);
-
+  const actionWrapper = document.createElement('div');
+  actionWrapper.style = 'display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end;';
 
   const addBtn = document.createElement('button');
   addBtn.textContent = '+ Add Invoice';
   addBtn.classList.add('add-invoice-btn');
+  addBtn.style = 'padding: 0.5rem 1rem;';
+
+  const statusFilter = document.createElement('select');
+  statusFilter.innerHTML = `
+    <option value="">All Status</option>
+    <option value="paid">Paid</option>
+    <option value="unpaid">Unpaid</option>
+    <option value="overdue">Overdue</option>
+  `;
+  statusFilter.style = 'padding: 0.5rem; border-radius: 4px;';
+
+  const clientFilter = document.createElement('select');
+  clientFilter.innerHTML = `<option value="">All Clients</option>` +
+    clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  clientFilter.style = 'padding: 0.5rem; border-radius: 4px;';
+
+  const dueFrom = document.createElement('input');
+  dueFrom.type = 'date';
+  dueFrom.style = 'padding: 0.5rem; border-radius: 4px;';
+
+  const dueTo = document.createElement('input');
+  dueTo.type = 'date';
+  dueTo.style = 'padding: 0.5rem; border-radius: 4px;';
+
+  actionWrapper.append(addBtn, statusFilter, clientFilter, dueFrom, dueTo);
+  searchWrapper.append(searchBar, actionWrapper);
 
   const table = document.createElement('table');
   table.innerHTML = `
@@ -102,19 +134,6 @@ export function InvoicesPage() {
     <tbody></tbody>
   `;
   const tbody = table.querySelector('tbody');
-
-  const filterWrapper = document.createElement('div');
-  filterWrapper.style = 'display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; align-items: center;';
-  const statusFilter = document.createElement('select');
-  statusFilter.innerHTML = `<option value="">All Status</option><option value="paid">Paid</option><option value="unpaid">Unpaid</option><option value="overdue">Overdue</option>`;
-  const clientFilter = document.createElement('select');
-  clientFilter.innerHTML = `<option value="">All Clients</option>` + clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  const dueFrom = document.createElement('input');
-  dueFrom.type = 'date';
-  const dueTo = document.createElement('input');
-  dueTo.type = 'date';
-  filterWrapper.append(statusFilter, clientFilter, dueFrom, dueTo);
-  div.prepend(filterWrapper);
 
   const render = (searchText = '') => {
     tbody.innerHTML = '';
@@ -167,24 +186,22 @@ export function InvoicesPage() {
     overlay.style.display = 'none';
   };
 
-  div.append(searchWrapper, addBtn);
+  div.append(searchWrapper);
 
   render();
 
   const tableWrapper = document.createElement('div');
   tableWrapper.style = `
-  overflow-x: auto;
-  width: 100%;
-  max-width: 100%;
-`;
-
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+  `;
 
   table.style = `
-  width: max-content;
-  min-width: 1000px;
-  border-collapse: collapse;
-`;
-  table.style.borderCollapse = 'collapse';
+    width: max-content;
+    min-width: 1000px;
+    border-collapse: collapse;
+  `;
 
   tableWrapper.appendChild(table);
   div.appendChild(tableWrapper);
