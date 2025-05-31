@@ -2,8 +2,8 @@ import { generateUUID } from '../utils.js';
 import { createItemRow } from './ItemRow.js';
 
 export function createInvoiceModal(clients, onSave) {
-    const overlay = document.createElement('div');
-    overlay.style = `
+  const overlay = document.createElement('div');
+  overlay.style = `
     position: fixed;
     top: 0; left: 0;
     width: 100%;
@@ -13,8 +13,8 @@ export function createInvoiceModal(clients, onSave) {
     display: none;
   `;
 
-    const modal = document.createElement('div');
-    modal.style = `
+  const modal = document.createElement('div');
+  modal.style = `
     position: fixed;
     top: 5%;
     left: 50%;
@@ -28,9 +28,11 @@ export function createInvoiceModal(clients, onSave) {
     z-index: 12;
     display: none;
     font-family: sans-serif;
+    max-height: 90vh;
+    overflow-y: auto;  
   `;
 
-    modal.innerHTML = `
+  modal.innerHTML = `
     <h3 id="modal-title" style="text-align:center;margin-bottom:1rem;">Add Invoice</h3>
     <form style="display:flex;flex-direction:column;gap:1rem;">
       <label>
@@ -99,65 +101,65 @@ export function createInvoiceModal(clients, onSave) {
     </form>
   `;
 
-    let currentInvoice = null;
-    const form = modal.querySelector('form');
-    const itemsContainer = modal.querySelector('#items-container');
-    const addItemBtn = modal.querySelector('#add-item-btn');
+  let currentInvoice = null;
+  const form = modal.querySelector('form');
+  const itemsContainer = modal.querySelector('#items-container');
+  const addItemBtn = modal.querySelector('#add-item-btn');
 
-    addItemBtn.onclick = () => {
-        itemsContainer.appendChild(createItemRow());
+  addItemBtn.onclick = () => {
+    itemsContainer.appendChild(createItemRow());
+  };
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    const items = [...itemsContainer.querySelectorAll('.item-row')].map(row => ({
+      name: row.querySelector('.item-name').value.trim(),
+      qty: parseInt(row.querySelector('.item-qty').value),
+      price: parseFloat(row.querySelector('.item-price').value),
+    })).filter(i => i.name && !isNaN(i.qty) && !isNaN(i.price));
+
+    const invoice = {
+      id: currentInvoice?.id || generateUUID(),
+      invoiceNumber: currentInvoice?.invoiceNumber || `INV-${Date.now()}`,
+      clientId: formData.get('clientId'),
+      issuedDate: formData.get('issuedDate'),
+      dueDate: formData.get('dueDate'),
+      status: formData.get('status'),
+      notes: formData.get('notes'),
+      items
     };
 
-    form.onsubmit = e => {
-        e.preventDefault();
-        const formData = new FormData(form);
+    onSave(invoice);
+    modal.style.display = overlay.style.display = 'none';
+  };
 
-        const items = [...itemsContainer.querySelectorAll('.item-row')].map(row => ({
-            name: row.querySelector('.item-name').value.trim(),
-            qty: parseInt(row.querySelector('.item-qty').value),
-            price: parseFloat(row.querySelector('.item-price').value),
-        })).filter(i => i.name && !isNaN(i.qty) && !isNaN(i.price));
+  modal.querySelector('#cancel-btn').onclick = () => {
+    modal.style.display = overlay.style.display = 'none';
+  };
 
-        const invoice = {
-            id: currentInvoice?.id || generateUUID(),
-            invoiceNumber: currentInvoice?.invoiceNumber || `INV-${Date.now()}`,
-            clientId: formData.get('clientId'),
-            issuedDate: formData.get('issuedDate'),
-            dueDate: formData.get('dueDate'),
-            status: formData.get('status'),
-            notes: formData.get('notes'),
-            items
-        };
+  function open(invoice = null) {
+    currentInvoice = invoice;
+    form.reset();
+    modal.querySelector('#modal-title').textContent = invoice ? 'Edit Invoice' : 'Add Invoice';
+    form.clientId.value = invoice?.clientId || clients[0]?.id;
+    form.issuedDate.value = invoice?.issuedDate || '';
+    form.dueDate.value = invoice?.dueDate || '';
+    form.status.value = invoice?.status || 'unpaid';
+    form.notes.value = invoice?.notes || '';
+    itemsContainer.innerHTML = '';
+    (invoice?.items || []).forEach(item => {
+      itemsContainer.appendChild(createItemRow(item));
+    });
+    if (!invoice) itemsContainer.appendChild(createItemRow());
+    modal.style.display = overlay.style.display = 'block';
+    overlay.style.display = 'block';
+  }
 
-        onSave(invoice);
-        modal.style.display = overlay.style.display = 'none';
-    };
-
-    modal.querySelector('#cancel-btn').onclick = () => {
-        modal.style.display = overlay.style.display = 'none';
-    };
-
-    function open(invoice = null) {
-        currentInvoice = invoice;
-        form.reset();
-        modal.querySelector('#modal-title').textContent = invoice ? 'Edit Invoice' : 'Add Invoice';
-        form.clientId.value = invoice?.clientId || clients[0]?.id;
-        form.issuedDate.value = invoice?.issuedDate || '';
-        form.dueDate.value = invoice?.dueDate || '';
-        form.status.value = invoice?.status || 'unpaid';
-        form.notes.value = invoice?.notes || '';
-        itemsContainer.innerHTML = '';
-        (invoice?.items || []).forEach(item => {
-            itemsContainer.appendChild(createItemRow(item));
-        });
-        if (!invoice) itemsContainer.appendChild(createItemRow());
-        modal.style.display = overlay.style.display = 'block';
-        overlay.style.display = 'block';
-    }
-
-    return {
-        modal,
-        overlay,
-        open,
-    };
+  return {
+    modal,
+    overlay,
+    open,
+  };
 }
