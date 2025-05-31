@@ -1,4 +1,6 @@
-.invoice-container, .classic-invoice {
+/* Base Container */
+.invoice-container,
+.classic-invoice {
   font-family: 'Georgia', serif;
   color: #000;
   max-width: 800px;
@@ -8,6 +10,7 @@
   background: #fff;
 }
 
+/* Header Section */
 .header {
   display: flex;
   justify-content: space-between;
@@ -18,15 +21,11 @@
   margin-bottom: 1rem;
 }
 
-.company-info {
-  width: 50%;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
+.company-info,
 .invoice-meta {
   width: 50%;
   font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .invoice-meta h2,
@@ -46,10 +45,12 @@
   vertical-align: top;
 }
 
+/* Client Info */
 .client-info {
   margin-bottom: 1rem;
 }
 
+/* Invoice Table */
 .invoice-table {
   width: 100%;
   border-collapse: collapse;
@@ -67,6 +68,7 @@
   font-weight: bold;
 }
 
+/* Transfer Info & Signature */
 .transfer-info {
   margin-top: 1rem;
   line-height: 1.6;
@@ -77,6 +79,7 @@
   margin-top: 3rem;
 }
 
+/* Footer */
 .footer {
   text-align: center;
   font-size: 0.8rem;
@@ -86,6 +89,7 @@
   font-style: italic;
 }
 
+/* Button Group (Non-printable) */
 .btn-group {
   margin-top: 1rem;
   display: flex;
@@ -95,6 +99,13 @@
 
 .no-print {
   display: inline-block;
+}
+
+/* Responsive Scroll for Invoice Container */
+#invoice-content {
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 /* Print Styling */
@@ -113,7 +124,8 @@
     visibility: hidden !important;
   }
 
-  #invoice-content, #invoice-content * {
+  #invoice-content,
+  #invoice-content * {
     visibility: visible !important;
   }
 
@@ -142,10 +154,3 @@
     display: none !important;
   }
 }
-
-#invoice-content {
-  width: max-content;
-  max-width: 100%;
-  overflow-x: auto;
-}
-

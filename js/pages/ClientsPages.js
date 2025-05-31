@@ -48,7 +48,7 @@ export function ClientsPage() {
 
 
     const btnContainer = document.createElement('div');
-    btnContainer.style = 'margin-bottom: 1rem; display: flex; gap: 0.5rem;';
+    btnContainer.style = 'margin-bottom: 1rem; display: flex; gap: 0.5rem;  margin-left: 1rem;';
 
     const addBtn = document.createElement('button');
     addBtn.textContent = '+ Add Client';
