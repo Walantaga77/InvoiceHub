@@ -142,16 +142,17 @@ export function InvoicesPage() {
 
   const searchIcon = document.createElement('span');
   searchIcon.textContent = '🔍';
+  searchIcon.style = 'margin-left: 1rem;';
 
   const searchInput = document.createElement('input');
   searchInput.type = 'text';
   searchInput.placeholder = 'Search invoice number or client name...';
-  searchInput.style = 'flex: 1; padding: 0.5rem;';
+  searchInput.style = 'flex: 1; max-width: 350px; padding: 0.5rem; margin-left: 1rem;';
 
   searchWrapper.append(searchIcon, searchInput);
 
   const filterWrapper = document.createElement('div');
-  filterWrapper.style = 'display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;';
+  filterWrapper.style = 'display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; margin-left: 1rem;';
 
   const statusFilter = document.createElement('select');
   statusFilter.innerHTML = `

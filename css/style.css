@@ -53,6 +53,7 @@ body {
 }
 
 .add-invoice-btn {
+  margin-left: 1rem;
   background-color: #43a047;
   color: white;
 }
