@@ -2,7 +2,6 @@ import { DashboardPage } from './pages/DashboardPage.js';
 import { ClientsPage } from './pages/ClientsPages.js';
 import { InvoicesPage } from './pages/InvoicesPage.js';
 import { InvoiceDetailPage } from './pages/InvoiceDetailPage.js';
-// import { InvoiceEditPage } from './pages/InvoiceEditPage.js'; // optional future support
 
 const routes = {
     '/': DashboardPage,
@@ -10,13 +9,6 @@ const routes = {
     '/invoices': InvoicesPage,
 };
 
-/**
- * Parses the current hash into a route path and optional params.
- * Examples:
- *   #/invoices           → { path: '/invoices', param: null }
- *   #/invoices/abc123    → { path: '/invoices', param: 'abc123' }
- *   #/invoices/edit/abc123 → { path: '/invoices/edit', param: 'abc123' }
- */
 function parseRoute(hash) {
     const parts = hash.replace(/^#/, '').split('/').filter(Boolean); // Remove # and empty parts
     const path = '/' + (parts[0] || '');         // base path
@@ -47,9 +39,6 @@ function renderRoute() {
         content.appendChild(InvoiceDetailPage(id));
     }
 
-    // else if (path === '/invoices/edit' && id) {
-    //   content.appendChild(InvoiceEditPage(id)); // Uncomment if edit page implemented
-    // }
     else if (routes[path]) {
         content.appendChild(routes[path]());
     } else {
