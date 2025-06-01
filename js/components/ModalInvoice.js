@@ -5,31 +5,31 @@ export function createInvoiceModal(clients, onSave) {
   const overlay = document.createElement('div');
   overlay.style = `
     position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.4);
-    z-index: 11;
-    display: none;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+  display: none;
   `;
 
   const modal = document.createElement('div');
   modal.style = `
     position: fixed;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    max-width: 600px;
-    width: 90%;
-    z-index: 12;
-    display: none;
-    font-family: sans-serif;
-    max-height: 90vh;
-    overflow-y: auto;  
+  top: 60px; /* ganti dari 5% ke fix offset dari atas */
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  max-width: 600px;
+  width: 90%;
+  z-index: 1000;
+  display: none;
+  font-family: sans-serif;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
   `;
 
   modal.innerHTML = `
