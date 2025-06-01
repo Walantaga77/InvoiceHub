@@ -19,7 +19,7 @@ InvoiceHub adalah aplikasi manajemen klien dan invoice berbasis vanilla JavaScri
 ![InvoiceHub Clients Screenshot](./screenshots/invoicehub-clients.jpg)
 
 - Tambah, edit, hapus klien
-  ![InvoiceHub dashboard Screenshot](./screenshots/invoicehub-invoices.jpg)
+  ![InvoiceHub modal add/edit client Screenshot](./screenshots/invoicehub-add-client.jpg)
 - Validasi form (nama, email, telepon)
 
 ### Pencarian & Filter
